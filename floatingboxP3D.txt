@@ -69,5 +69,10 @@ void draw() {
   }
   
   da += 0.1;
-  saveFrame("frames/######.tif");
+}
+
+void keyPressed(){
+  if (keyCode == ENTER) {
+    saveFrame("screen-#####.jpg");
+  }
 }
