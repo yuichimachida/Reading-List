@@ -1,0 +1,44 @@
+int num = 5;
+float x;
+float[] y = new float[num];
+float[] r = new float[num];
+float[] A = new float[num];
+float[] w = new float[num];
+float p1;
+float p2;
+float t2;
+
+void setup() {
+  size(720, 400);
+  p1 = 0.0;
+  p2 = 0.0;
+  t2 = 0.0;
+  for (int i = 0; i < num; i++) {
+    A[i] = random(50,150);
+    w[i] = random(0.02, 0.05);
+    r[i] = random(10,20);
+  }
+}
+
+void draw() {
+  background(255);
+  noStroke();
+  fill(0, 50);
+  /*
+  for (int i = 0; i < num; i++) {
+    for (float t1 = 0; t1 < width; t1 += 2) {
+      x = t1;
+      y[i] = -A*sin(w*t1 + p1);
+      ellipse(x, y[i] + height/2, 1, 1);
+    }
+  }
+  */
+  for (int i = 0; i < num; i++) {
+    x = t2;
+    y[i] = -(A[i]*sin(w[i]*t2 + p2));
+    ellipse(x, y[i] + height/2, r[i], r[i]);
+  }
+  t2 += 1.0;
+  if (t2 > width) t2 = 0;
+}
+    
