@@ -1,0 +1,90 @@
+int NUM = 100;
+
+ParticleVec2[] particles = new ParticleVec2[NUM];
+
+
+void setup() {
+  // setup
+  size(600, 800);
+  frameRate(60);
+  noStroke();
+  fill(255);
+  // particle instance
+  for (int i = 0; i < NUM; i++) {
+    particles[i] = new ParticleVec2();
+  
+    particles[i].location.set(width/2,height/4);   // start point initialize
+    particles[i].gravity.set(0, 0.1);
+    particles[i].mass = 1.0;
+    particles[i].friction = 0.002;   // friction
+    particles[i].radius = 1.5;
+    particles[i].addForce(new PVector(random(-10, 10), random(-10, 10)));  // force particle
+  }
+  background(0);
+}
+
+void draw() {
+  fill(0,31);
+  rect(0,0, width, height);
+  
+  fill(255);
+  // update particle location
+  for (int i = 0; i < NUM; i++) {
+    particles[i].update();
+    // bounce
+    particles[i].bounceOffWalls();
+    // draw particle
+    particles[i].draw();
+  }
+}
+
+class ParticleVec2 {
+  PVector location;
+  PVector gravity;
+  PVector velocity;
+  PVector acceleration;
+  float friction;
+  float radius;
+  float mass;
+  
+  // Constructor
+  ParticleVec2() {
+    radius = 4.0;
+    location = new PVector(width/2.0, height/2.0);
+    gravity = new PVector(0, 0);
+    velocity = new PVector(0, 0);
+    acceleration = new PVector(0, 0);
+    friction = 0.0;
+    mass = 1.0;
+  }
+  
+  void update() {
+    velocity.add(acceleration);
+    velocity.add(gravity);
+    velocity.mult(1.0 - friction);
+    location.add(velocity);
+    acceleration.set(0,0);
+  }
+  
+  void bounceOffWalls() {
+    if (location.x < 0 || location.x > width) {
+      velocity.x *= -1 ;
+    }
+    if (location.y < 0 || location.y > height) {
+      velocity.y *= -1 ;
+    }
+    
+    location.x = constrain(location.x, 0, width);
+    location.y = constrain(location.y, 0, height);
+  }
+  
+  
+  void addForce(PVector force){
+    force.div(mass);
+    acceleration.add(force);
+  }
+  
+  void draw() {
+    ellipse(location.x, location.y, radius * 2, radius * 2);
+  }
+}
